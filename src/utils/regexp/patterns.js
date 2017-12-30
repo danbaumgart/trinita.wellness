@@ -1,0 +1,20 @@
+export default {
+	UPPERCASE: /[A-Z]/,
+	HYPHENATED: /[-][a-z]/,
+	LOWERCASE: /[a-z]/,
+	INTEGER: /[0-9]/,
+	WHITESPACE: /\s/,
+	SPECIAL_CHARACTER: /[_\s\W]/g,
+	WORD: /\\w/,
+	BOUNDARY: /\\b/,
+	DIGIT: /\\d/,
+	NOT_WHITESPACE: /\\S/,
+	NOT_WORD: /\\W/,
+	NOT_DIGIT: /\\D/,
+	NOT_BOUNDARY: /\\B/,
+	TELEPHONE_MASK: /[\\s)(-]/,
+	CAMEL_CASE: /^[a-z]+([A-Z][a-z]+)*$/,
+	CONSTANT_CASE: /^[A-Z]+([_][A-Z]+)+$/,
+	SPINAL_CASE: /^[A-Za-z]+([-][A-Za-z]+)*$/,
+	PROPER_CASE: /^[A-Z][a-z]+([\\s][A-Z][a-z]+|[\\s][A-Z|a-z])*$/
+};

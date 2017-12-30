@@ -1,0 +1,4 @@
+const X_REQUESTED_WITH = {
+    XML_HTTP_REQUEST: 'XMLHttpRequest'
+};
+export const {XML_HTTP_REQUEST} = X_REQUESTED_WITH;

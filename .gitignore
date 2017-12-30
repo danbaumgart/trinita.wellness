@@ -1,0 +1,7 @@
+/node_modules/
+npm-debug.log
+/src/images/
+/public/
+/.idea/
+npm-debug.log.*
+0.16.4
