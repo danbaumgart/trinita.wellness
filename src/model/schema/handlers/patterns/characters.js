@@ -1,15 +1,16 @@
 import {SchemaPatterns} from '../../constants';
-const CharacterPatterns = {
-	[SchemaPatterns.ALPHA]: `[A-Za-z]`,
-	[SchemaPatterns.ALPHANUMERIC]: `[^_\\W\\s}]`,
-	[SchemaPatterns.LOWERCASE]: `[a-z]`,
-	[SchemaPatterns.NUMERIC]: `[\\d]`,
-	[SchemaPatterns.SPECIAL]: `[^\\s\\w]|_`,
-	[SchemaPatterns.UPPERCASE]: `[A-Z]`
+import CharacterPatterns from '../../../pattern/constants/characters';
+const CharacterPatternHandler = {
+	[SchemaPatterns.ALPHA]: CharacterPatterns.Alpha,
+	[SchemaPatterns.ALPHANUMERIC]: CharacterPatterns.Alphanumeric,
+	[SchemaPatterns.LOWERCASE]: CharacterPatterns.Lowercase,
+	[SchemaPatterns.NUMERIC]: CharacterPatterns.Numeric,
+	[SchemaPatterns.SPECIAL]: CharacterPatterns.Special,
+	[SchemaPatterns.UPPERCASE]: CharacterPatterns.Uppercase
 };
-Object.defineProperties(CharacterPatterns, {
-    'keys': {get: () => Object.keys(CharacterPatterns)},
-    'values': {get: () => Object.values(CharacterPatterns)}
+Object.defineProperties(CharacterPatternHandler, {
+    'keys': {get: () => Object.keys(CharacterPatternHandler)},
+    'values': {get: () => Object.values(CharacterPatternHandler)}
 });
-Object.freeze(CharacterPatterns);
-export default CharacterPatterns;
+Object.freeze(CharacterPatternHandler);
+export default CharacterPatternHandler;

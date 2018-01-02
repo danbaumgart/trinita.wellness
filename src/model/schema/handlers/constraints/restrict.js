@@ -1,14 +1,21 @@
 import {SchemaPatterns, SchemaTypes} from '../../constants';
-import PatternHandler from '../patterns';
+import Characters from '../../../pattern/constants/characters';
+import {Validate} from '../validation';
 export default {
-	[SchemaPatterns.EMAIL]: input => PatternHandler.matchEntire(input, SchemaTypes.EMAIL),
-	[SchemaPatterns.NUMBER]: input => !Number.isNaN(Number(input)),
-	[SchemaPatterns.INTEGER]: input => this[SchemaPatterns.NUMBER](input) && Number(input) % 1 === 0 || PatternHandler.matchEntire(input, SchemaPatterns.NUMERIC),
-	[SchemaPatterns.ALPHA]: input => PatternHandler.matchEntire(input, SchemaPatterns.ALPHA),
-	[SchemaPatterns.NUMERIC]: input => PatternHandler.matchEntire(input, SchemaPatterns.NUMERIC),
-	[SchemaPatterns.ALPHANUMERIC]: input => PatternHandler.matchEntire(input, SchemaPatterns.ALPHANUMERIC),
-	[SchemaPatterns.SPECIAL]: input => PatternHandler.matchEntire(input, SchemaPatterns.SPECIAL),
-	[SchemaPatterns.UPPERCASE]: input => PatternHandler.matchEntire(input, SchemaPatterns.UPPERCASE),
-	[SchemaPatterns.LOWERCASE]: input => PatternHandler.matchEntire(input, SchemaPatterns.LOWERCASE),
-	[SchemaPatterns.VALUE]: (input, value) => new RegExp('^' + value + '$').test(input)
+    [SchemaTypes.NUMBER]: Validate.typeOfNumber,
+    [SchemaTypes.PHONE]: Validate.typeOfPhone,
+	[SchemaTypes.EMAIL]: Validate.typeOfEmail,
+    [SchemaTypes.INTEGER]: Validate.typeOfInteger,
+    [SchemaTypes.DATE]: Validate.typeOfDate,
+    [SchemaTypes.TIME]: Validate.typeOfTime,
+    [SchemaTypes.BOOLEAN]: Validate.typeOfBoolean,
+    [SchemaTypes.ARRAY]: Validate.typeOfArray,
+    [SchemaTypes.TEXT]: Validate.typeOfString,
+	[SchemaPatterns.ALPHA]: Validate.patternMatch.bind(this, Characters.Alpha),
+	[SchemaPatterns.NUMERIC]: Validate.patternMatch.bind(this, Characters.Numeric),
+	[SchemaPatterns.ALPHANUMERIC]: Validate.patternMatch.bind(this, Characters.Alphanumeric),
+	[SchemaPatterns.SPECIAL]: Validate.patternMatch.bind(this, Characters.Special),
+	[SchemaPatterns.UPPERCASE]: Validate.patternMatch.bind(this, Characters.Uppercase),
+	[SchemaPatterns.LOWERCASE]: Validate.patternMatch.bind(this, Characters.Lowercase),
+	[SchemaPatterns.VALUE]: value => Validate.patternMatch.bind(this, value)
 };

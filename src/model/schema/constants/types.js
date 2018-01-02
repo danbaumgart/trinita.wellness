@@ -1,14 +1,14 @@
 const SchemaTypes = {
-	TEXT: 'TEXT',
-    PASSWORD: 'PASSWORD',
-	BOOLEAN: 'BOOLEAN',
-	PHONE: 'PHONE',
-	EMAIL: 'EMAIL',
-	DATE: 'DATE',
-	TIME: 'TIME',
-	INTEGER: 'INTEGER',
-	NUMBER: 'NUMBER',
-	ARRAY: 'ARRAY'
+	TEXT: 'text',
+    PASSWORD: 'password',
+	BOOLEAN: 'boolean',
+	PHONE: 'phone',
+	EMAIL: 'email',
+	DATE: 'date',
+	TIME: 'time',
+	INTEGER: 'integer',
+	NUMBER: 'number',
+	ARRAY: 'array'
 };
 Object.defineProperty(SchemaTypes, 'values', {
 	get: () => Object.values(SchemaTypes)

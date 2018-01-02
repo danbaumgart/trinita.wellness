@@ -1,22 +1,9 @@
-const MERIDIEM_TYPES = {
-	AM: 'AM',
-	PM: 'PM'
-};
-const METRICS = {
-	TIME: 'time',
-	DATE: 'date'
-};
-const UNITS = {
-	HOUR: 'hour',
-	DAY: 'day',
-	MONTH: 'month',
-	MINUTE: 'minute',
-	SECOND: 'second',
-	MILLISECOND: 'millisecond',
-	YEAR: 'year',
-	MERIDIEM: 'meridiem'
-};
-export const {HOUR, DAY, MONTH, MINUTE, SECOND, MILLISECOND, YEAR, MERIDIEM} = UNITS;
-export const {AM, PM} = MERIDIEM_TYPES;
-export const {DATE, TIME} = METRICS;
-export default {AM, PM, HOUR, DAY, MONTH, MINUTE, SECOND, MILLISECOND, YEAR, MERIDIEM, DATE, TIME};
+import MeridiemTypes from './meridiem';
+import MonthNames from './months';
+import TimeUnits from './units';
+import TimeMetrics from './metrics';
+export const Meridiem = MeridiemTypes;
+export const Metrics = TimeMetrics;
+export const Months = MonthNames;
+export const Units = TimeUnits;
+

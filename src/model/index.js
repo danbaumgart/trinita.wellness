@@ -5,4 +5,3 @@ export class Model extends Handler {
     }
 }
 export const ErrorHandler = Handler;
-export default Model;

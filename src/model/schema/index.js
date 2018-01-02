@@ -1,4 +1,4 @@
-import {SchemaTypes, SchemaAttributes, SchemaPatterns} from './constants';
+import {SchemaTypes} from './constants';
 import ValidationModel from './model';
 export class FieldModel extends ValidationModel {
 	constructor(type, minimum, maximum, ...patterns) {
@@ -11,7 +11,6 @@ export class FieldModel extends ValidationModel {
         return new this(type, false, minimum, maximum);
     }
 }
-
 export class DateField extends FieldModel {
     constructor(required, minimum, maximum) {
         super(SchemaTypes.DATE, required, minimum, maximum);

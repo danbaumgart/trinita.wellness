@@ -2,8 +2,6 @@ import {SchemaTypes, SchemaPatterns, SchemaAttributes, SchemaLimits} from '../co
 import Limit from '../limit';
 const sample = {
     type: SchemaTypes.PASSWORD,
-    minimum: 5,
-    maximum: 10,
     required: false,
     pattern: [
         SchemaPatterns.ALPHANUMERIC,

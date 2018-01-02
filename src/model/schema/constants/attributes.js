@@ -1,10 +1,10 @@
 import SchemaPatterns from './patterns';
 const SchemaAttributes = {
-    TYPE: 'TYPE',
-    REQUIRED: 'REQUIRED',
-	MINIMUM: 'MINIMUM',
-	MAXIMUM: 'MAXIMUM',
-	PATTERN: 'PATTERN'
+    TYPE: 'type',
+    REQUIRED: 'required',
+	MINIMUM: 'minimum',
+	MAXIMUM: 'maximum',
+	PATTERN: 'pattern'
 };
 Object.assign(SchemaAttributes, SchemaPatterns);
 Object.defineProperty(SchemaAttributes, 'values', {

@@ -1,11 +1,11 @@
-import Criteria from '../../constants/criteria';
-import PatternHandler from '../patterns';
+import Criteria from '../../constants/patterns';
+import Characters from '../../../pattern/constants/characters';
+import {Validate} from '../validation';
 export default {
-	[Criteria.LENGTH]: (input, minimum) => input && input.length >= minimum,
-	[Criteria.VALUE]: (input, minimum) => input && input >= minimum,
-	[Criteria.ALPHA]: (input, minimum) => PatternHandler.getInstances(input, Criteria.ALPHA).length >= minimum,
-	[Criteria.NUMERIC]: (input, minimum) => PatternHandler.getInstances(input, Criteria.NUMERIC).length >= minimum,
-	[Criteria.SPECIAL]: (input, minimum) => PatternHandler.getInstances(input, Criteria.SPECIAL).length >= minimum,
-	[Criteria.UPPERCASE]: (input, minimum) => PatternHandler.getInstances(input, Criteria.UPPERCASE).length >= minimum,
-	[Criteria.LOWERCASE]: (input, minimum) => PatternHandler.getInstances(input, Criteria.LOWERCASE).length >= minimum
+	[Criteria.ALPHA]: Validate.minimumPatternMatch.bind(this, Characters.Alpha),
+	[Criteria.NUMERIC]: Validate.minimumPatternMatch.bind(this, Characters.Numeric),
+	[Criteria.ALPHANUMERIC]: Validate.minimumPatternMatch.bind(this, Characters.Alphanumeric),
+	[Criteria.SPECIAL]: Validate.minimumPatternMatch.bind(this, Characters.Special),
+	[Criteria.UPPERCASE]: Validate.minimumPatternMatch.bind(this, Characters.Uppercase),
+	[Criteria.LOWERCASE]: Validate.minimumPatternMatch.bind(this, Characters.Lowercase)
 };

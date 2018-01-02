@@ -1,48 +1,31 @@
-import {Model} from '../../..';
-import CharacterPatterns from './characters';
-import DataPatterns from './data';
-import Utils from '../../../../utils';
-
-class Pattern extends Model {
-    constructor(name) {
-        super();
-        this.name = name;
-        this.value = Pattern.getPatternValue(name);
-    }
-    static getPatternValue(patternName) {
-        if(!Pattern.NAMES.includes(name)) Pattern.throwTypeError(Pattern.TYPE_ERROR_MESSAGE, {name});
-        else if(DataPatterns.keys.includes(patternName)) return DataPatterns[patternName];
-        else if(CharacterPatterns.keys.includes(patternName)) return CharacterPatterns[patternName];
-    }
-    get expression() {
-        return Pattern.Expression(this.pattern);
-    }
-    get wrappedExpression() {
-        let pattern = this.pattern;
-        if(CharacterPatterns.keys.includes(this.name)) pattern += '+';
-        return Pattern.Expression(`^${pattern}$`, Utils.RegExp.Parameters.GLOBAL_MATCH);
-    }
-    static Expression(pattern) {
-        return new RegExp(pattern, Utils.RegExp.Parameters.GLOBAL_MATCH);
-    }
-    static get TYPE_ERROR_MESSAGE() {
-        return `Pattern name must be one of: ${JSON.stringify(Pattern.NAMES)}`;
-    }
-    static get NAMES() {
-        return Utils.removeDuplicates(DataPatterns.keys.concat(CharacterPatterns.keys));
-    }
-}
-export default {
-    matchEntire(inputValue, patternKey){
-        const wrappedExpression = new Pattern(patternKey).wrappedExpression;
+import {Pattern} from '../../../pattern';
+import CharacterPatternHandler from './characters';
+import DataPatternHandler from './data';
+export const CharacterPatterns = CharacterPatternHandler;
+export const DataPatterns = DataPatternHandler;
+const PatternHandler = {
+    isValidType(type) {
+        return Pattern.isCharacterPattern(type) ||
+            Pattern.isDataPattern(type);
+    },
+    getExpression(pattern) {
+        if(PatternHandler.isValidType(pattern))
+            return new Pattern(pattern).expression;
+        return Pattern.Expression(pattern);
+    },
+    getWrappedExpression(pattern) {
+        if(PatternHandler.isValidType(pattern))
+            return new Pattern(pattern).wrappedExpression;
+        return Pattern.WrappedExpression(pattern);
+    },
+    inputValueMatchesPattern(inputValue, pattern) {
+        const wrappedExpression = PatternHandler.getWrappedExpression(pattern);
         return wrappedExpression.test(inputValue.trim());
     },
-    matchEntireInput(inputValue, patternKey){
-        const wrappedExpression = new Pattern(patternKey).wrappedExpression;
-        return wrappedExpression.test(inputValue.trim());
-    },
-    getInstances(inputValue, patternKey){
-        const expression = new Pattern(patternKey).expression;
+    getPatternMatches(inputValue, pattern){
+        const expression = pattern instanceof RegExp && pattern ||
+            PatternHandler.getExpression(pattern);
         return inputValue.match(expression) || [];
     }
 };
+export default PatternHandler;

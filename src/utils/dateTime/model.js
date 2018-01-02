@@ -1,4 +1,6 @@
-import {AM, PM, MERIDIEM, TIME, DATE} from './constants';
+import Moment from 'moment';
+import {Units, Meridiem, Metrics} from './constants';
+
 export class DateModel {
     constructor(dateTime) {
         this.day = dateTime.getDate();
@@ -21,18 +23,18 @@ export class TimeModel {
     }
     toMeridiemTime() {
         if (!this.isMeridiemFormat()) {
-            this[MERIDIEM] = this.hour >= 12 ? PM : AM;
-            if (this[MERIDIEM] === PM) this.hour -= 12;
+            this[Units.MERIDIEM] = this.hour >= 12 ? Meridiem.PM : Meridiem.AM;
+            if (this[Units.MERIDIEM] === Meridiem.PM) this.hour -= 12;
         }
     }
     toMilitaryTime() {
         if (this.isMeridiemFormat()) {
-            if (this[MERIDIEM] === PM) this.hour += 12;
-            delete this[MERIDIEM];
+            if (this[Units.MERIDIEM] === Meridiem.PM) this.hour += 12;
+            delete this[Units.MERIDIEM];
         }
     }
     isMeridiemFormat() {
-        return this.hasOwnProperty(MERIDIEM);
+        return this.hasOwnProperty(Units.MERIDIEM);
     }
 }
 export class DateTime {
@@ -52,19 +54,18 @@ export class DateTime {
             timeModel = data;
             dateModel = new DateModel(new Date());
         } else if(DateTime.isDateTimeModel(data)){
-            timeModel = data[TIME];
-            dateModel = data[DATE];
+            timeModel = data[Metrics.TIME];
+            dateModel = data[Metrics.DATE];
         } else {
             let standardDate = new Date();
-            timeModel = DateTime.hasTimeModelProperty(data) ? data[TIME] : new TimeModel(standardDate);
-            dateModel = DateTime.hasDateModelProperty(data) ? data[DATE] : new DateModel(standardDate);
+            timeModel = DateTime.hasTimeModelProperty(data) ? data[Metrics.TIME] : new TimeModel(standardDate);
+            dateModel = DateTime.hasDateModelProperty(data) ? data[Metrics.DATE] : new DateModel(standardDate);
         }
         this.date = dateModel;
         this.time = timeModel;
     }
     static isStandardDate(date) {
-        const _isDate = date instanceof Date;
-        return _isDate;
+        return date instanceof Date;
     }
     static isDateTimeModel(model) {
         return model instanceof DateTime;
@@ -73,14 +74,13 @@ export class DateTime {
         return model instanceof TimeModel;
     }
     static isDateModel(model) {
-        const _isDateModel = model instanceof DateModel;
-        return _isDateModel;
+        return model instanceof DateModel;
     }
     static hasTimeModelProperty(data) {
-        return data.hasOwnProperty(TIME) && DateTime.isTimeModel(data[TIME]);
+        return data.hasOwnProperty(Metrics.TIME) && DateTime.isTimeModel(data[Metrics.TIME]);
     }
     static hasDateModelProperty(data) {
-        return data.hasOwnProperty(DATE) && DateTime.isDateModel(data[DATE]);
+        return data.hasOwnProperty(Metrics.DATE) && DateTime.isDateModel(data[Metrics.DATE]);
     }
     ToMilitaryTime() {
         if(DateTime.isTimeModel(this.time)) this.time.ToMilitaryTime();
