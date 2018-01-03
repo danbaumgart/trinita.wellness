@@ -2,18 +2,30 @@ import PatternHandler from '../patterns';
 import {SchemaPatterns, SchemaTypes} from '../../constants';
 import Moment from 'moment';
 import {DateTime} from '../../../../utils/dateTime/model';
-import DataTypes from '../../../../utils/constants/dataTypes';
+import ValueTypes from '../../../../utils/constants/valueTypes';
 import TypeHandler from '../constraints/restrict';
 const ValidationUtils = {
     TypeHandler,
-    typeOfNumber(input) {
-        return typeof input === DataTypes.NUMBER;
+    typeOfNumber(value) {
+        return typeof value === ValueTypes.NUMBER;
     },
-    typeOfBoolean(input) {
-        return typeof input === DataTypes.BOOLEAN;
+    typeOfBoolean(value) {
+        return typeof value === ValueTypes.BOOLEAN;
     },
-    typeOfString(input) {
-        return typeof input === DataTypes.STRING;
+    typeOfString(value) {
+        return typeof value === ValueTypes.STRING;
+    },
+    typeOfObject(value) {
+        return typeof value === ValueTypes.OBJECT;
+    },
+    typeOfFunction(value) {
+        return typeof value === ValueTypes.FUNCTION;
+    },
+    typeOfUndefined(value) {
+        return typeof value === ValueTypes.UNDEFINED;
+    },
+    typeOfNull(value) {
+        return typeof value === ValueTypes.NULL;
     },
     typeOfArray(value) {
         return Array.isArray(value);

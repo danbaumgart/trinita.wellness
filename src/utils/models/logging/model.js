@@ -1,6 +1,6 @@
 import LoggingStatus from './constants/status';
 import Methods from '../../../http/constants/request/methods';
-import IdentityModel from '../../../model/identity';
+import IdentityModel from '../../../model/base/identity';
 class Transaction extends IdentityModel {
 	constructor(resource, method, timestamp, id) {
 		super(id);

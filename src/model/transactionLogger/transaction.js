@@ -1,4 +1,4 @@
-import IdentityModel from '../identity';
+import IdentityModel from '../base/identity';
 import {TransactionStatus} from './constants';
 class Transaction extends IdentityModel {
     constructor(resource, method, timestamp, id) {

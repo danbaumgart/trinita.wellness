@@ -1,4 +1,4 @@
-const DataTypes = {
+const ValueTypes = {
     UNDEFINED: 'undefined',
     NULL: 'null',
     BOOLEAN: 'boolean',
@@ -8,8 +8,8 @@ const DataTypes = {
     FUNCTION: 'function',
     OBJECT: 'object'
 };
-Object.defineProperty(DataTypes, 'values', {
-    get: () => Object.values(DataTypes)
+Object.defineProperty(ValueTypes, 'values', {
+    get: () => Object.values(ValueTypes)
 });
-Object.freeze(DataTypes);
-export default DataTypes;
+Object.freeze(ValueTypes);
+export default ValueTypes;

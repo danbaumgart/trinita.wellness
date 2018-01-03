@@ -1,29 +1,36 @@
 import ErrorTypes from './handlers/types';
 import {ErrorNames} from './constants';
-class ErrorModel {
-    constructor(name) {
+import {LogModel} from '../base';
+class ErrorModel extends LogModel {
+    constructor(name, message) {
+        super();
         this.name = ErrorNames.values.includes(name) ? name : ErrorNames.ERROR;
-        this.timestamp = new Date();
+        this.message = message || `Invalid ${name}`;
     }
-    static GetError(message, name) {
+    throwError(data) {
+        throw this.Error(data);
+    }
+    buildMessage(data) {
+        return ErrorModel.buildMessage(this.message, data, this.timestamp);
+    }
+    Error(data) {
+        return ErrorModel.Error(this.buildMessage(data), this.name);
+    }
+    static Error(message, name) {
         if(name && ErrorTypes.keys.includes(name))
             return new ErrorTypes[name](message);
         return new Error(message);
     }
-    static StringifyData(data) {
+    static stringifyData(data) {
         return JSON.stringify(data)
             .replace(new RegExp(',', 'g'), ', ')
             .replace(new RegExp(':', 'g'), ': ');
     }
-    static BuildMessage(message, data, timestamp = new Date()) {
+    static buildMessage(message, data, timestamp) {
         return !data ? message : [
-            `${message}. ${timestamp}`,
-            `   ${ErrorModel.StringifyData(data)}`
+            `${this.name}: ${message}. ${timestamp}`,
+            `   ${ErrorModel.stringifyData(data)}`
         ].join('\n');
-    }
-    throwError(message, data) {
-        const errorMessage = ErrorModel.BuildMessage(message, data, this.timestamp);
-        throw ErrorModel.GetError(errorMessage, this.name);
     }
 }
 export default ErrorModel;

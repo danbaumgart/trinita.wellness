@@ -1,4 +1,4 @@
-import IdentityModel from '../identity';
+import IdentityModel from '../base/identity';
 import Transaction from './transaction';
 import {TransactionMethods} from './constants';
 class TransactionLogger {

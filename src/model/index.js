@@ -1,7 +1,3 @@
-import Handler from './error/handlers';
-export class Model extends Handler {
-    static isInstance(model) {
-        return model instanceof this;
-    }
-}
-export const ErrorHandler = Handler;
+import ErrorHandler from './error/handlers';
+import {BaseModel} from './base/model';
+export const Model = Model;

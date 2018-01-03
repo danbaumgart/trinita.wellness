@@ -1,39 +1,45 @@
 import {SchemaPatterns, SchemaLimits} from './constants';
-import {Model} from '..';
+import Model from '../base';
+import {Validate} from './handlers/validation';
 class Limit extends Model {
     constructor(minimum, maximum) {
         super();
-        if(!Limit.isValidLimit({minimum, maximum})) Limit.throwTypeError(Limit.TYPE_ERROR_MESSAGE, {minimum, maximum});
-        if(maximum || maximum === 0) this.maximum = maximum;
-        if(minimum) this.minimum = minimum;
+        if(Limit.isValidMaximum(maximum)) this.maximum = maximum;
+        if(Limit.isValidMinimum(minimum)) this.minimum = minimum;
+        if(!this.isValid) Limit.throwTypeError({minimum, maximum});
+    }
+    static isValid(limit) {
+        return limit.hasOwnProperty(Limit.MINIMUM) && Limit.isValidMinimum(limit.minimum) ||
+            limit.hasOwnProperty(Limit.MAXIMUM) && Limit.isValidMaximum(limit.maximum);
     }
     static get MINIMUM() {
-        return SchemaLimits.MINIMUM;
+        return "minimum";
     }
     static get MAXIMUM() {
-        return SchemaLimits.MAXIMUM;
+        return "maximum";
     }
     static Minimum(minimum) {
-    	return new Limit(minimum, null);
+        if(Limit.isValidMinimum(minimum)) return new Limit(minimum, null);
 	}
 	static Maximum(maximum) {
-    	return new Limit(null, maximum);
+    	if(Limit.isValidMaximum(maximum)) return new Limit(null, maximum);
 	}
+    static isValidMinimum(minimum) {
+        return Validate.typeOfInteger(minimum) && minimum >= 1;
+    }
+    static isValidMaximum(maximum) {
+        return Validate.typeOfInteger(maximum) && maximum >= 0;
+    }
     static Pattern(pattern, minimum, maximum) {
         return SchemaPatterns.values.includes(pattern) && {[pattern]: new Limit(minimum, maximum)} || null;
     }
 	static get TYPE_ERROR_MESSAGE() {
         return 'A minimum and/or maximum value is required.';
     }
-    static isValidLimitValue(value) {
-        return value && typeof value === 'number' && value % 1 === 0 || value === 0;
-    }
     static isValidLimit(limit) {
-        const isInvalidObject = !(limit && typeof limit === 'object');
-		const hasValidArguments = !isInvalidObject && Object.keys(limit).length &&
-            Object.keys(limit).every(key => SchemaLimits.values.includes(key));
-    	if(isInvalidObject || !hasValidArguments) return false;
-    	return Object.values(limit).every(Limit.isValidLimitValue);
+        const hasValidMinimum = limit.hasOwnProperty(Limit.MINIMUM) && Limit.isValidMinimum(limit.minimum);
+        const hasValidMaximum = limit.hasOwnProperty(Limit.MAXIMUM) && Limit.isValidMaximum(limit.maximum);
+        return hasValidMinimum || hasValidMaximum;
     }
 }
 export default Limit;
