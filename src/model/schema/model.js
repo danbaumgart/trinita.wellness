@@ -1,7 +1,7 @@
 import {SchemaTypes, SchemaAttributes, SchemaPatterns, SchemaLimits} from './constants';
 import Limit from './limit';
 import {Validate} from '../schema/handlers/validation';
-import Model from '../base';
+import {Model} from '../base';
 class Schema extends Model {
     constructor(type, required, minimum, maximum, ...patterns) {
         super();
@@ -9,17 +9,13 @@ class Schema extends Model {
         this.required = required === true;
         if(Schema.isValidMinimum(minimum)) this.minimum = minimum;
         if(Schema.isValidMaximum(maximum)) this.maximum = maximum;
-        if(Schema.areValidPatterns(patterns)) this.patterns = patterns.reduce(Schema.PatternReducer, {});
+        if(Schema.areValidPatterns(patterns)) this.pattern = Schema.reducePatterns(patterns);
     }
-    get isNumeric() {
-        return Schema.NumericTypes.includes(this.type);
+    get numeric() {
+        return Schema.isNumeric(this.type);
     }
-    static isPatternRestriction(pattern) {
-        return Validate.typeOfString(pattern) && SchemaPatterns.values.includes(pattern);
-    }
-    static isPatternObject(pattern) {
-        return Object.keys(pattern).every(key => SchemaPatterns.values.includes(key)) &&
-            Object.values(pattern).every(value => Limit.isValidLimit(value) || Validate.typeOfBoolean(value));
+    static reducePatterns(patterns) {
+        return patterns.reduce(Schema.PatternReducer, {});
     }
     static get PatternReducer() {
         return (restrictions, pattern) => {
@@ -27,21 +23,6 @@ class Schema extends Model {
             else if(Schema.isPatternObject(pattern)) Object.keys(pattern).forEach(key => restrictions[key] = pattern[key]);
             return restrictions;
         };
-    }
-    static get MINIMUM() {
-        return SchemaAttributes.MINIMUM;
-    }
-    static get MAXIMUM() {
-        return SchemaAttributes.MAXIMUM;
-    }
-    static get REQUIRED() {
-        return SchemaAttributes.REQUIRED;
-    }
-    static get TYPE() {
-        return SchemaAttributes.TYPE;
-    }
-    static get PATTERN() {
-        return SchemaAttributes.PATTERN;
     }
     static get NumericTypes() {
         return [SchemaTypes.NUMBER, SchemaTypes.INTEGER];
@@ -51,6 +32,16 @@ class Schema extends Model {
     }
     static get TYPE_ERROR_MESSAGE() {
         return `Must be one of: ${JSON.stringify(SchemaTypes.values)}`;
+    }
+    static isNumeric(schemaType) {
+        return Schema.NumericTypes.includes(schemaType);
+    }
+    static isPatternRestriction(pattern) {
+        return Validate.typeOfString(pattern) && SchemaPatterns.values.includes(pattern);
+    }
+    static isPatternObject(pattern) {
+        return Object.keys(pattern).every(key => SchemaPatterns.values.includes(key)) &&
+            Object.values(pattern).every(value => Limit.isValid(value) || Validate.typeOfBoolean(value));
     }
     static isValidPatternType(pattern) {
         return SchemaPatterns.values.includes(pattern);
@@ -62,8 +53,8 @@ class Schema extends Model {
         return Validate.typeOfInteger(maximum) && maximum >= 0;
     }
     static isValidPattern(pattern) {
-        if(typeof pattern === 'string') return Schema.isValidPatternType(pattern);
-        else if(typeof pattern === 'object') {
+        if(Validate.typeOfString('string')) return Schema.isValidPatternType(pattern);
+        else if(Validate.typeOfObject('object')) {
             return Object.keys(pattern).every(key => SchemaPatterns.values.includes(key)) &&
                 Object.values(pattern).every(value => Limit.isInstance(value) || Validate.typeOfBoolean(value));
         } return false;
@@ -76,7 +67,44 @@ class Schema extends Model {
         Schema.throwTypeError(type);
     }
 }
-Schema.Patterns = SchemaPatterns;
-Schema.Types = SchemaTypes;
+Schema.Properties = {
+    TYPE: 'type',
+    REQUIRED: 'required',
+    MINIMUM: 'minimum',
+    MAXIMUM: 'maximum',
+    PATTERN: 'pattern'
+};
+Object.defineProperty(Schema.Properties, 'values', {
+    get: () => Object.values(Schema.Properties)
+});
+Object.freeze(Schema.Properties);
+Schema.Patterns = {
+    ALPHA: 'ALPHA',
+    NUMERIC: 'NUMERIC',
+    ALPHANUMERIC: 'ALPHANUMERIC',
+    SPECIAL: 'SPECIAL',
+    UPPERCASE: 'UPPERCASE',
+    LOWERCASE: 'LOWERCASE'
+};
+Object.defineProperty(Schema.Patterns, 'values', {
+    get: () => Object.values(Schema.Patterns)
+});
+Object.freeze(Schema.Types);
+Schema.Types = {
+    TEXT: 'text',
+    PASSWORD: 'password',
+    BOOLEAN: 'boolean',
+    PHONE: 'phone',
+    EMAIL: 'email',
+    DATE: 'date',
+    TIME: 'time',
+    INTEGER: 'integer',
+    NUMBER: 'number',
+    ARRAY: 'array'
+};
+Object.defineProperty(Schema.Types, 'values', {
+    get: () => Object.values(Schema.Types)
+});
+Object.freeze(Schema.Patterns);
 export default Schema;
 

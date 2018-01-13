@@ -1,4 +1,4 @@
 import Characters from './characters';
-import DataFormat from './dataFormat';
+import Format from './dataFormat';
 export const CharacterPatterns = Characters;
-export const DataFormatPatterns = DataFormat;
+export const FormatPatterns = Format;

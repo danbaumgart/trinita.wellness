@@ -1,12 +1,12 @@
 import {SchemaPatterns} from '../../constants';
-import CharacterPatterns from '../../../pattern/constants/characters';
+import {Pattern} from '../../../pattern';
 const CharacterPatternHandler = {
-	[SchemaPatterns.ALPHA]: CharacterPatterns.Alpha,
-	[SchemaPatterns.ALPHANUMERIC]: CharacterPatterns.Alphanumeric,
-	[SchemaPatterns.LOWERCASE]: CharacterPatterns.Lowercase,
-	[SchemaPatterns.NUMERIC]: CharacterPatterns.Numeric,
-	[SchemaPatterns.SPECIAL]: CharacterPatterns.Special,
-	[SchemaPatterns.UPPERCASE]: CharacterPatterns.Uppercase
+	[SchemaPatterns.ALPHA]: Pattern.Criteria.alpha,
+	[SchemaPatterns.ALPHANUMERIC]: Pattern.Criteria.alphanumeric,
+	[SchemaPatterns.LOWERCASE]: Pattern.Criteria.lowercase,
+	[SchemaPatterns.NUMERIC]: Pattern.Criteria.numeric,
+	[SchemaPatterns.SPECIAL]: Pattern.Criteria.special,
+	[SchemaPatterns.UPPERCASE]: Pattern.Criteria.uppercase
 };
 Object.defineProperties(CharacterPatternHandler, {
     'keys': {get: () => Object.keys(CharacterPatternHandler)},

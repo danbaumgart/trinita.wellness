@@ -1,7 +1,6 @@
 import PatternModel from './model';
-import {DataFormatPatterns, CharacterPatterns} from './constants';
-export const Patterns = {
-    DataFormat: DataFormatPatterns,
-    Characters: CharacterPatterns
-};
+import Format from './constants/dataFormat';
+import Character from './constants/characters';
+export const FormatPatterns = Format;
+export const CharacterPatterns = Character;
 export const Pattern = PatternModel;

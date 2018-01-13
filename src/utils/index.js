@@ -1,16 +1,11 @@
-import RegularExpressionParameters from './regexp/constants/regExpParameters';
+import RegExpArguments from './regexp/constants/arguments';
 export const Reducers = {
-    duplicateReducer(consolidatedArray, item) {
-        if (!consolidatedArray.includes(item)) consolidatedArray.push(item);
-        return consolidatedArray;
-    }
+    Unique: (array, item) => !array.includes(item) ? array.concat(item) : array
 };
-export const RegExpParameters = RegularExpressionParameters;
+export const RegExp = {
+    Arguments: RegExpArguments
+};
 export default {
-    RegExp: {
-        Parameters: RegExpParameters
-    },
-    removeDuplicates(comprehensiveArray) {
-        return comprehensiveArray.reduce(Reducers.duplicateReducer, []);
-    }
+    RegExp,
+    Reducers
 };

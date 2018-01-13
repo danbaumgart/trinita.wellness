@@ -1,13 +1,7 @@
-//import PatternHandler from '../patterns';
-import PatternHandler from '../../../pattern/handler';
-import Pattern from '../../../pattern/model';
-import {SchemaPatterns, SchemaTypes} from '../../constants';
 import Moment from 'moment';
-import {DateTime} from '../../../../utils/dateTime/model';
-import ValueTypes from '../../../../utils/constants/valueTypes';
-import TypeHandler from '../constraints/restrict';
-const ValidationUtils = {
-    TypeHandler,
+import {DateTime} from '../dateTime/model';
+import ValueTypes from '../constants/valueTypes';
+const ValueType = {
     typeOfNumber(value) {
         return typeof value === ValueTypes.NUMBER;
     },
@@ -33,13 +27,11 @@ const ValidationUtils = {
         return Array.isArray(value);
     },
     typeOfInteger(value) {
-        return ValidationUtils.typeOfNumber(value) && value % 1 === 0;
+        return this.typeOfNumber(value) && value % 1 === 0;
     },
     typeOfDate(value) {
-        if(ValidationUtils.typeOfString(value)) return ValidationUtils.patternMatch(SchemaTypes.DATE, value);
-        return DateTime.isDateModel(value) ||
-            DateTime.isStandardDate(value) ||
-            Moment(value).isValid();
+        if(this.typeOfString(value)) return PatternUtils.isValidPatternMatch(ValueTypes.DATE, value);
+        return DateTime.isDateModel(value) || DateTime.isStandardDate(value) || Moment(value).isValid();
     },
     typeOfTime(value) {
         if(ValidationUtils.typeOfString(value)) return ValidationUtils.patternMatch(SchemaTypes.TIME, value);
@@ -79,18 +71,10 @@ const ValidationUtils = {
         return PatternHandler.getPatternMatches(inputValue, patternKey).length >= minimum;
     },
     isValidMaximumPatternMatch(pattern, inputValue, maximum) {
-        const matches = PatternHandler.isValid(pattern) ?
-            Pattern.getMatchingInstances(new PatternHandler(pattern).regularExpression) || [] :
-            new Pattern(pattern).getMatchingInstances(inputValue);
-        return matches <= maximum;
+        return PatternHandler.getPatternMatches(inputValue, pattern).length <= maximum;
     },
-    isValidPatternMatch(pattern, value) {
-        if(PatternHandler.isValid(pattern))
-            let pattern = new PatternHandler(pattern);
-            let value = pattern.type === PatternHandler.Types.CRITERIA ?
-        return Pattern.WrappedRegularExpression(pattern.type === PatternHandler.Types.CRITERIA ? ).test(value);
-            new Pattern(pattern).testInputValue(value);
+    isValidPatternMatch(pattern, input) {
+        return PatternHandler.inputValueMatchesPattern(input, pattern);
     }
 };
-export const Validate = ValidationUtils;
 export default ValidationUtils;

@@ -1,4 +1,3 @@
-import {ErrorNames} from '../constants';
 import ErrorModel from '..';
 class ErrorHandler {
     static Error(errorName, message) {
@@ -9,5 +8,5 @@ class ErrorHandler {
         return new ErrorModel(errorName, errorMessage).throwError(data);
     }
 }
-ErrorHandler.ErrorNames = ErrorNames;
+
 export default ErrorHandler;

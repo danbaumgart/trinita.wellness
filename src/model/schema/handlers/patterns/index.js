@@ -3,29 +3,27 @@ import CharacterPatternHandler from './characters';
 import DataPatternHandler from './data';
 export const CharacterPatterns = CharacterPatternHandler;
 export const DataPatterns = DataPatternHandler;
-const PatternHandler = {
+export default {
     isValidType(type) {
-        return Pattern.isCharacterPattern(type) ||
-            Pattern.isDataPattern(type);
+        return Pattern.isCharacterPattern(type) || Pattern.isFormatPattern(type);
     },
-    getExpression(pattern) {
-        if(PatternHandler.isValidType(pattern))
-            return new Pattern(pattern).expression;
-        return Pattern.Expression(pattern);
+    getRegularExpression(pattern) {
+        if(this.isValidType(pattern)) return new Pattern(pattern).regularExpression;
+        return Pattern.RegularExpression(pattern);
     },
-    getWrappedExpression(pattern) {
-        if(PatternHandler.isValidType(pattern))
-            return new Pattern(pattern).wrappedExpression;
-        return Pattern.WrappedExpression(pattern);
+    getWrappedRegularExpression(pattern) {
+        if(this.isValidType(pattern)) return new Pattern(pattern).wrappedRegularExpression;
+        return Pattern.WrappedRegularExpression(pattern);
     },
-    inputValueMatchesPattern(inputValue, pattern) {
-        const wrappedExpression = PatternHandler.getWrappedExpression(pattern);
-        return wrappedExpression.test(inputValue.trim());
+    inputValueMatchesPattern(value, pattern) {
+        const wrappedExpression = this.getWrappedRegularExpression(pattern);
+        return wrappedExpression.test(value.trim());
+    },
+    isRegularExpression(regExp) {
+        return regExp instanceof RegExp;
     },
     getPatternMatches(inputValue, pattern){
-        const expression = pattern instanceof RegExp && pattern ||
-            PatternHandler.getExpression(pattern);
+        const expression = this.isRegularExpression(pattern) ? pattern : this.getExpression(pattern);
         return inputValue.match(expression) || [];
     }
 };
-export default PatternHandler;

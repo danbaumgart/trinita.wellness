@@ -1,10 +1,10 @@
 const CharacterPatterns = {
-	Alpha: `[A-Za-z]`,
-	Alphanumeric: `[^_\\W\\s}]`,
-	Lowercase: `[a-z]`,
-	Numeric: `[\\d]`,
-	Special: `[^\\s\\w]|_`,
-	Uppercase: `[A-Z]`
+	alpha: `[A-Za-z]`,
+	alphaNumeric: `[^_\\W\\s}]`,
+	lowerCase: `[a-z]`,
+	numeric: `[\\d]`,
+	special: `[^\\s\\w]|_`,
+	upperCase: `[A-Z]`
 };
 Object.defineProperties(CharacterPatterns, {
     'keys': {get: () => Object.keys(CharacterPatterns)},

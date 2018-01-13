@@ -1,5 +1,5 @@
 import {SchemaPatterns, SchemaLimits} from './constants';
-import Model from '../base';
+import {Model} from '../base';
 import {Validate} from './handlers/validation';
 class Limit extends Model {
     constructor(minimum, maximum) {
@@ -7,16 +7,6 @@ class Limit extends Model {
         if(Limit.isValidMaximum(maximum)) this.maximum = maximum;
         if(Limit.isValidMinimum(minimum)) this.minimum = minimum;
         if(!this.isValid) Limit.throwTypeError({minimum, maximum});
-    }
-    static isValid(limit) {
-        return limit.hasOwnProperty(Limit.MINIMUM) && Limit.isValidMinimum(limit.minimum) ||
-            limit.hasOwnProperty(Limit.MAXIMUM) && Limit.isValidMaximum(limit.maximum);
-    }
-    static get MINIMUM() {
-        return "minimum";
-    }
-    static get MAXIMUM() {
-        return "maximum";
     }
     static Minimum(minimum) {
         if(Limit.isValidMinimum(minimum)) return new Limit(minimum, null);
@@ -33,13 +23,22 @@ class Limit extends Model {
     static Pattern(pattern, minimum, maximum) {
         return SchemaPatterns.values.includes(pattern) && {[pattern]: new Limit(minimum, maximum)} || null;
     }
+    static isValid(limit) {
+        return limit && (super.isValid(limit) ||
+            limit.hasOwnProperty(Limit.Properties.MINIMUM) && Limit.isValidMinimum(limit[Limit.Properties.MINIMUM]) ||
+            limit.hasOwnProperty(Limit.Properties.MAXIMUM) && Limit.isValidMaximum(limit[Limit.Properties.MAXIMUM])
+        );
+    }
 	static get TYPE_ERROR_MESSAGE() {
         return 'A minimum and/or maximum value is required.';
     }
-    static isValidLimit(limit) {
-        const hasValidMinimum = limit.hasOwnProperty(Limit.MINIMUM) && Limit.isValidMinimum(limit.minimum);
-        const hasValidMaximum = limit.hasOwnProperty(Limit.MAXIMUM) && Limit.isValidMaximum(limit.maximum);
-        return hasValidMinimum || hasValidMaximum;
-    }
 }
+Limit.Properties = {
+    MINIMUM: 'minimum',
+    MAXIMUM: 'maximum'
+};
+Object.defineProperty(Limit.Properties, 'values', {
+    get: () => Object.values(Limit.Properties)
+});
+Object.freeze(Limit.Properties);
 export default Limit;

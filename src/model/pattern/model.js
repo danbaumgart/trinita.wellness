@@ -1,43 +1,56 @@
 import {Model} from '..';
-import Utils from '../../utils';
-import {CharacterPatterns, DataPatterns} from '../schema/handlers/patterns';
-class Pattern extends Model {
-    constructor(patternType) {
+import {RegExp} from '../../utils';
+class PatternModel extends Model {
+    constructor(pattern) {
         super();
-        this.type = patternType;
-        this.value = Pattern.getValueByPatternType(patternType);
+        this.value = pattern;
     }
-    get expression() {
-        return Pattern.Expression(this.value);
+    get regularExpression() {
+        return PatternModel.RegularExpression(this.value);
     }
-    get wrappedExpression() {
-        let pattern = this.value;
-        if(Pattern.isCharacterPattern(pattern)) pattern += '+';
-        return Pattern.WrappedExpression(pattern);
+    get wrappedRegularExpression() {
+        return PatternModel.WrappedRegularExpression(this.value);
     }
-    static get TYPE_ERROR_MESSAGE() {
-        return `Pattern type must be one of: ${JSON.stringify(Pattern.Types)}`;
+    getMatchingInstances(inputValue) {
+        return PatternModel.getMatchingInstances(this.value, inputValue);
     }
-    static get Types() {
-        return Utils.removeDuplicates(DataPatterns.keys.concat(CharacterPatterns.keys));
+
+    testInputValue(inputValue) {
+        return PatternModel.testInputValue(this.value, inputValue);
     }
-    static getValueByPatternType(type) {
-        if(Pattern.isCharacterPattern(type)) return CharacterPatterns[type];
-        else if(Pattern.isDataPattern(type)) return DataPatterns[type];
-        Pattern.throwTypeError(Pattern.TYPE_ERROR_MESSAGE, {type});
+
+    static RegularExpression(patternValue) {
+        return new RegExp(patternValue, RegExp.Arguments.GlobalMatch);
     }
-    static Expression(pattern) {
-        return new RegExp(pattern, Utils.RegExp.Parameters.GLOBAL_MATCH);
+
+    static WrappedRegularExpression(patternValue) {
+        return new RegExp(`^${patternValue}$`, RegExp.Arguments.GlobalMatch);
     }
-    static WrappedExpression(pattern) {
-        return new RegExp(`^${pattern}$`, Utils.RegExp.Parameters.GLOBAL_MATCH);
+
+    static getMatchingInstances(patternValue, inputValue) {
+        return inputValue.match(PatternModel.RegularExpression(patternValue)) || [];
     }
-    static isDataPattern(patternType) {
-        return DataPatterns.keys.includes(patternType);
-    }
-    static isCharacterPattern(patternType) {
-        return CharacterPatterns.keys.includes(patternType);
+
+    static testInputValue(patternValue, inputValue) {
+        return PatternModel.WrappedRegularExpression(patternValue).test(inputValue);
     }
 }
-
-export default Pattern;
+PatternModel.patterns = {
+    date: `(0?\\d|1[0-2])\\/(0?\\d|1\\d|2\\d|3[01])\\/(19|20)\\d{2}`,
+    email: `([\\w.-]+[^\\W}])(@[\\w.-]+)(\\.[^\\W_]+)`,
+    time: `(0?[1-9]|1[0-2])(\\s?:\\s?)([0-5]\\d)(\\s?[pPaA][mM])`,
+    phone: `(\\d-)?[(]\\d{3}[)]\\d{3}-\\d{4}`,
+    integer: `[\\d]+`,
+    alpha: `[A-Za-z]`,
+    alphanumeric: `[^_\\W\\s}]`,
+    lowercase: `[a-z]`,
+    numeric: `[\\d]`,
+    special: `[^\\w\\s]|[_]`,
+    uppercase: `[A-Z]`
+};
+Object.defineProperties(PatternModel.patterns, {
+    'keys': {get: () => Object.keys(PatternModel.patterns)},
+    'values': {get: () => Object.values(PatternModel.patterns)}
+});
+Object.freeze(PatternModel.patterns);
+export default PatternModel;
