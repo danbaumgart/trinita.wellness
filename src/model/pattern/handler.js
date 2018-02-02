@@ -1,18 +1,21 @@
-import {Model} from '..';
-import Pattern from './model';
+import {Model} from '../base';
+import {CriterionModel, PatternModel} from '.';
 class PatternHandler extends Model {
     constructor(patternName) {
         super();
+        if(patternName && CriteriaModel.patterns.keys.includes(patternName.toLowerCase()))
         this.name = PatternHandler.getName(patternName);
-        if(!this.valid) PatternHandler.throwError({patternName});
+        if(!this.isValid) PatternHandler.throwError({patternName});
     }
     get type() {
         return PatternHandler.getType(this.name);
     }
-    get value() {
-        return PatternHandler.getValue(this.name);
+    get wrappedRegularExpression() {
+        let value = this.value;
+        if(this.type === PatternHandler.Types.CRITERIA) value += '+';
+        return PatternHandler.WrappedRegularExpression(value);
     }
-    get valid() {
+    get isValid() {
         return PatternHandler.isValid(this.name);
     }
     static getName(name) {
@@ -20,45 +23,49 @@ class PatternHandler extends Model {
     }
     static getValue(name) {
         switch(this.getType(name)) {
-            case this.Types.FORMAT:
+            case this.Types.PATTERN:
                 return this.Format[this.getName(name)];
             case this.Types.CRITERIA:
                 return this.Criteria[this.getName(name)];
             default:
-                return null;
+                return '';
         }
     }
     static getType(name) {
-        if(this.isCriteriaType(name)) return this.Types.CRITERIA;
-        else if(this.isFormatType(name)) return this.Types.FORMAT;
+        if(this.isCriteriaType(name)) return this.Types.Criteria;
+        else if(this.isFormatType(name)) return this.Types.Pattern;
         return null;
     }
     static isFormatType(name) {
         return name && this.Format.keys.includes(this.getName(name));
     }
     static isCriteriaType(name) {
-        return name && this.Criteria.keys.includes(this.getName(name));
+        return name && CriteriaModel.patterns.keys.includes(name);
     }
     static isValid(pattern) {
-        return super.isValid(pattern) || Boolean(this.getValue(this.getType(this.getName(pattern))));
+        return super.isValid(pattern) || Boolean(this.getValue(this.getName(pattern)));
     }
 }
 PatternHandler.Types = {
-    FORMAT: 'FORMAT',
+    PATTERN: 'PATTERN',
     CRITERIA: 'CRITERIA'
 };
+PatternHandler.TypeHandler = {
+    [this.PATTERN]: PatternModel,
+    [this.CRITERIA]: CriteriaModel
+};
 PatternHandler.Names = {
-    DATE: 'DATE',
-    EMAIL: 'EMAIL',
-    TIME: 'TIME',
-    PHONE: 'PHONE',
-    INTEGER: 'INTEGER',
-    ALPHA: 'ALPHA',
-    ALPHANUMERIC: 'ALPHANUMERIC',
-    LOWERCASE: 'LOWERCASE',
-    NUMERIC: 'NUMERIC',
-    SPECIAL: 'SPECIAL',
-    UPPERCASE: 'UPPERCASE'
+    DATE: 'date',
+    EMAIL: 'email',
+    TIME: 'time',
+    PHONE: 'phone',
+    INTEGER: 'integer',
+    ALPHA: 'alpha',
+    ALPHANUMERIC: 'alphanumeric',
+    LOWERCASE: 'lowercase',
+    NUMERIC: 'numeric',
+    SPECIAL: 'special',
+    UPPERCASE: 'uppercase'
 };
 Object.defineProperty(PatternHandler.Names, 'values', {
     get: () => Object.values(PatternHandler.Names)
@@ -67,19 +74,19 @@ Object.defineProperty(PatternHandler.Types, 'values', {
     get: () => Object.values(PatternHandler.Types)
 });
 PatternHandler.Format = {
-    [this.Names.DATE]: Pattern.patterns.date,
-    [this.Names.PHONE]: Pattern.patterns.phone,
-    [this.Names.TIME]: Pattern.patterns.time
+    [this.Names.DATE]: PatternModel.patterns.date,
+    [this.Names.PHONE]: PatternModel.patterns.phone,
+    [this.Names.TIME]: PatternModel.patterns.time
 };
 PatternHandler.Criteria = {
-    [this.Names.ALPHA]: Pattern.patterns.alpha,
-    [this.Names.ALPHANUMERIC]: Pattern.patterns.alphanumeric,
-    [this.Names.EMAIL]: Pattern.patterns.email,
-    [this.Names.INTEGER]: Pattern.patterns.numeric,
-    [this.Names.LOWERCASE]: Pattern.patterns.lowercase,
-    [this.Names.NUMERIC]: Pattern.patterns.numeric,
-    [this.Names.SPECIAL]: Pattern.patterns.special,
-    [this.Names.UPPERCASE]: Pattern.patterns.uppercase
+    [this.Names.ALPHA]: CriteriaModel.patterns.alpha,
+    [this.Names.ALPHANUMERIC]: CriteriaModel.patterns.alphanumeric,
+    [this.Names.EMAIL]: CriteriaModel.patterns.email,
+    [this.Names.INTEGER]: CriteriaModel.patterns.numeric,
+    [this.Names.LOWERCASE]: CriteriaModel.patterns.lowercase,
+    [this.Names.NUMERIC]: CriteriaModel.patterns.numeric,
+    [this.Names.SPECIAL]: CriteriaModel.patterns.special,
+    [this.Names.UPPERCASE]: CriteriaModel.patterns.uppercase
 };
 Object.defineProperty(PatternHandler.Criteria, 'keys', {
     get: () => Object.keys(PatternHandler.Criteria)

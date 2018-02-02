@@ -1,5 +1,5 @@
 import QUESTIONS from './properties';
-import CRITERIA from '../../utils/validation/constants/criteria';
+import CRITERIA from '../../utils/validation/constants/criteriaProperties';
 import SCHEMA from '../../utils/validation/constants/schema';
 import INPUTS from '../../ui/constants/inputs';
 export default {

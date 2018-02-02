@@ -1,11 +1,11 @@
 //import PatternHandler from '../patterns';
-import PatternHandler from '../../../pattern/handler';
-import Pattern from '../../../pattern/model';
-import {SchemaPatterns, SchemaTypes} from '../../constants';
+import PatternHandler from '../../pattern/handler';
+import Pattern from '../../pattern/pattern';
+import {SchemaPatterns, SchemaTypes} from '../../schema/constants/index';
 import Moment from 'moment';
-import {DateTime} from '../../../../utils/dateTime/model';
-import ValueTypes from '../../../../utils/constants/valueTypes';
-import TypeHandler from '../constraints/restrict';
+import {DateTime} from '../../../utils/dateTime/model';
+import ValueTypes from '../../../utils/constants/valueTypes';
+import TypeHandler from '../../schema/handlers/constraints/restrict';
 const ValidationUtils = {
     TypeHandler,
     typeOfNumber(value) {
@@ -85,11 +85,9 @@ const ValidationUtils = {
         return matches <= maximum;
     },
     isValidPatternMatch(pattern, value) {
-        if(PatternHandler.isValid(pattern))
-            let pattern = new PatternHandler(pattern);
-            let value = pattern.type === PatternHandler.Types.CRITERIA ?
-        return Pattern.WrappedRegularExpression(pattern.type === PatternHandler.Types.CRITERIA ? ).test(value);
-            new Pattern(pattern).testInputValue(value);
+        if(PatternHandler.isValid(pattern)) {
+            return new PatternHandler(pattern).wrappedRegularExpression.test(value);
+        } return new Pattern(pattern).testInputValue(value);
     }
 };
 export const Validate = ValidationUtils;

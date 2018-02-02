@@ -1,4 +1,4 @@
-import Criteria from '../../constants/criteria';
+import Criteria from '../../constants/criteriaProperties';
 export default {
 	[Criteria.ALPHA]: /[A-Za-z]/,
 	[Criteria.ALPHANUMERIC]: /[^_\W\s]/,

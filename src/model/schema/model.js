@@ -1,6 +1,6 @@
 import {SchemaTypes, SchemaAttributes, SchemaPatterns, SchemaLimits} from './constants';
 import Limit from './limit';
-import {Validate} from '../schema/handlers/validation';
+import {Validate} from '../utils/validation';
 import {Model} from '../base';
 class Schema extends Model {
     constructor(type, required, minimum, maximum, ...patterns) {

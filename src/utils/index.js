@@ -1,10 +1,8 @@
-import RegExpArguments from './regexp/constants/arguments';
+import RegExp from './regexp';
 export const Reducers = {
     Unique: (array, item) => !array.includes(item) ? array.concat(item) : array
 };
-export const RegExp = {
-    Arguments: RegExpArguments
-};
+export const RegularExpression = RegExp;
 export default {
     RegExp,
     Reducers

@@ -1,5 +1,5 @@
 const ErrorNames = {
-    ERROR: 'Error',
+    DEFAULT: 'Error',
     EVAL: 'EvalError',
     RANGE: 'RangeError',
     REFERENCE: 'ReferenceError',

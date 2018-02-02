@@ -1,6 +1,6 @@
 import Criteria from '../../constants/patterns';
 import Characters from '../../../pattern/constants/characters';
-import {Validate} from '../validation';
+import {Validate} from '../../../utils/validation';
 export default {
 	[Criteria.ALPHA]: Validate.minimumPatternMatch.bind(this, Characters.Alpha),
 	[Criteria.NUMERIC]: Validate.minimumPatternMatch.bind(this, Characters.Numeric),

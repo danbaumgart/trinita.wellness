@@ -1,6 +1,6 @@
 import {SchemaPatterns, SchemaLimits} from './constants';
 import {Model} from '../base';
-import {Validate} from './handlers/validation';
+import {Validate} from '../utils/validation';
 class Limit extends Model {
     constructor(minimum, maximum) {
         super();

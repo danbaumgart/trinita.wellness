@@ -1,3 +1,5 @@
+import Patterns from "./patterns";
+
 const RegExpArguments = {
     GlobalMatch: 'g',
     IgnoreCase: 'i',
@@ -6,8 +8,9 @@ const RegExpArguments = {
     Sticky: 'y'
 
 };
-Object.defineProperty(RegExpArguments, 'values', {
-    get: () => Object.values(RegExpArguments)
+Object.defineProperties(RegExpArguments, {
+    'keys': {get: () => Object.keys(RegExpArguments)},
+    'values': {get: () => Object.values(RegExpArguments)}
 });
 Object.freeze(RegExpArguments);
 export default RegExpArguments;

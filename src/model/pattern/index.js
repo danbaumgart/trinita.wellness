@@ -1,6 +1,9 @@
-import PatternModel from './model';
-import Format from './constants/dataFormat';
-import Character from './constants/characters';
-export const FormatPatterns = Format;
-export const CharacterPatterns = Character;
-export const Pattern = PatternModel;
+import Pattern from './pattern';
+import Patterns from './constants/patterns';
+import {Criteria, Criterion} from './criteria';
+export const PatternModel = Pattern;
+export const CriterionModel = Criterion;
+export const CriteriaPatterns = Criteria;
+export const PatternValues = Patterns;
+PatternValues.Alpha
+

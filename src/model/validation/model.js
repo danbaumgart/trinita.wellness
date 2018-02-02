@@ -1,11 +1,11 @@
 import {Model} from '../base';
-import {Validate} from '../schema/handlers/validation';
+import {Validate} from '../utils/validation';
 import Limit from '../schema/limit';
 import Schema from '../schema/model';
 class Validation extends Model {
     constructor(schema, value) {
         super();
-        if(!Schema.isInstance(schema)) Validation.throwTypeError({schema});
+        if(!Schema.isInstance(schema)) Validation.throwError({schema});
         this.schema = schema;
         this.value = value;
     }
@@ -61,7 +61,7 @@ class Validation extends Model {
     }
     isValidMaximum() {
         return !this.maximum || this.schema.numeric ?
-            Validate.maximumValue(this.value, this.maximum) :
+            Validate.minimumValue(this.value, this.maximum) :
             Validate.maximumLength(this.value, this.maximum);
     }
     isValidMinimum() {

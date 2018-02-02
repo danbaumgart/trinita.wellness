@@ -1,4 +1,4 @@
-import Pattern from '../pattern/model';
+import Pattern from '../pattern/pattern';
 import {Log} from '../base';
 class ErrorModel extends Log {
     constructor(name, message) {

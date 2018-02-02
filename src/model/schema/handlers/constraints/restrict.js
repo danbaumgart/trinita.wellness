@@ -1,6 +1,6 @@
 import {SchemaPatterns, SchemaTypes} from '../../constants';
 import Characters from '../../../pattern/constants/characters';
-import {Validate} from '../validation';
+import {Validate} from '../../../utils/validation';
 export default {
     [SchemaTypes.NUMBER]: Validate.typeOfNumber,
     [SchemaTypes.PHONE]: Validate.typeOfPhone,

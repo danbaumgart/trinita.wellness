@@ -1,4 +1,4 @@
-import Criteria from '../../constants/criteria';
+import Criteria from '../../constants/criteriaProperties';
 import MATCH from '../match';
 export default {
 	[Criteria.LENGTH]: (input, minimum) => input && input.length >= minimum,

@@ -1,6 +1,6 @@
 import Criteria from '../../constants/patterns';
 import Characters from '../../../pattern/constants/characters';
-import Validate from '../validation';
+import Validate from '../../../utils/validation';
 const MaximumValidation = {
     [Criteria.LENGTH]: Validate.maximumLength,
     [Criteria.VALUE]: Validate.maximumValue,
